@@ -1,10 +1,9 @@
 // Copyright 2024, University of Colorado Boulder
 
 /**
- * ESLint configuration for simula-rasa.
+ * ESLint configuration for amortization-calc.
  *
- * @author Sam Reid (PhET Interactive Simulations)
- * @author Michael Kauzmann (PhET Interactive Simulations)
+ * @author Luke Thompson
  */
 
 import simEslintConfig from '../perennial-alias/js/eslint/config/sim.eslint.config.mjs';
