@@ -5,7 +5,7 @@
  * It manages the loan parameters (amount, term, interest rate) and computes the amortization schedule.
  * All application logic and state are contained here, following PhET's MVC pattern.
  *
- * @author Luke Thompson
+ * @author Luke Thorne
  */
 
 import TModel from '../../../../joist/js/TModel.js';
