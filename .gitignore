@@ -17,4 +17,7 @@ node_modules/
 *~
 .cache
 .parcel-cache
+<<<<<<< HEAD
 .vscode
+=======
+>>>>>>> 1b9804842b4d02dddbdb9514317f73043fc01ffd
