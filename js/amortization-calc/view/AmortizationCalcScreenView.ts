@@ -44,12 +44,13 @@ type SelfOptions = EmptySelfOptions;
 type AmortizationCalcScreenViewOptions = SelfOptions & ScreenViewOptions;
 
 // Constants for the view
-const PANEL_FILL = new Color( '#f7f5f4' );
+const PANEL_FILL = new Color( '#f4eee2' );
 const ACCENT_COLOR = new Color( '#0c2049' );
-const TITLE_FONT = new PhetFont( { size: 18, weight: 'bold' } );
-const LABEL_FONT = new PhetFont( 18 );
-const RESULTS_FONT = new PhetFont( 18 );
-const CONTROL_PANEL_WIDTH = 300;
+const BACKGROUND_COLOR = new Color( '#0c2049' );
+const TITLE_FONT = new PhetFont( { size: 16, weight: 'bold' } );
+const LABEL_FONT = new PhetFont( 14 );
+const RESULTS_FONT = new PhetFont( 14 );
+const CONTROL_PANEL_WIDTH = 280;
 
 export default class AmortizationCalcScreenView extends ScreenView {
 
@@ -94,6 +95,18 @@ export default class AmortizationCalcScreenView extends ScreenView {
     }, providedOptions );
 
     super( options );
+
+    // Add background rectangle to fill the entire screen
+    const backgroundRectangle = new Rectangle( 
+      this.layoutBounds.minX, 
+      this.layoutBounds.minY, 
+      this.layoutBounds.width, 
+      this.layoutBounds.height, 
+      {
+        fill: BACKGROUND_COLOR
+      }
+    );
+    this.addChild( backgroundRectangle );
 
     this.model = model;
 
@@ -242,7 +255,7 @@ export default class AmortizationCalcScreenView extends ScreenView {
         this.calculateButton,
         this.resultsText
       ],
-      spacing: 15,
+      spacing: 10,
       align: 'left'
     } );
 
@@ -252,8 +265,8 @@ export default class AmortizationCalcScreenView extends ScreenView {
       stroke: new Color( '#ccc' ),
       lineWidth: 2,
       cornerRadius: 8,
-      xMargin: 20,
-      yMargin: 15,
+      xMargin: 15,
+      yMargin: 12,
       tandem: options.tandem.createTandem( 'controlPanel' ),
       // Accessibility
       tagName: 'div',
@@ -263,14 +276,14 @@ export default class AmortizationCalcScreenView extends ScreenView {
     } );
 
     // Position control panel at top left
-    controlPanel.left = AmortizationCalcConstants.SCREEN_VIEW_X_MARGIN + 20;
-    controlPanel.top = AmortizationCalcConstants.SCREEN_VIEW_Y_MARGIN;
+    controlPanel.left = AmortizationCalcConstants.SCREEN_VIEW_X_MARGIN + 10;
+    controlPanel.top = AmortizationCalcConstants.SCREEN_VIEW_Y_MARGIN + 5;
     this.addChild( controlPanel );
 
     // Create Extra Payment Panel (initially hidden/locked)
     const extraPaymentTitleText = new Text( 'What happens when you extra?', {
       font: new PhetFont( { size: 16, weight: 'bold' } ),
-      fill: new Color( '#0a8a0a' ),
+      fill: new Color( '#19a979' ),
       // Accessibility
       tagName: 'h3',
       innerContent: 'Extra Payment Exploration'
@@ -309,7 +322,7 @@ export default class AmortizationCalcScreenView extends ScreenView {
     
     const reAmortizeButton = new RectangularPushButton( {
       content: reAmortizeButtonText,
-      baseColor: new Color( '#0a8a0a' ),
+      baseColor: new Color( '#19a979' ),
       listener: () => {
         model.computeSchedule();
       },
@@ -328,7 +341,7 @@ export default class AmortizationCalcScreenView extends ScreenView {
         reAmortizeButton,
         this.comparisonText
       ],
-      spacing: 12,
+      spacing: 8,
       align: 'left'
     } );
 
@@ -337,8 +350,8 @@ export default class AmortizationCalcScreenView extends ScreenView {
       stroke: new Color( '#0a8a0a' ),
       lineWidth: 2,
       cornerRadius: 8,
-      xMargin: 20,
-      yMargin: 15,
+      xMargin: 15,
+      yMargin: 12,
       visible: false, // Initially hidden until first calculation
       tandem: options.tandem.createTandem( 'extraPaymentPanel' ),
       // Accessibility
@@ -350,7 +363,7 @@ export default class AmortizationCalcScreenView extends ScreenView {
 
     // Position extra payment panel below control panel
     this.extraPaymentPanel.left = controlPanel.left;
-    this.extraPaymentPanel.top = controlPanel.bottom ;
+    this.extraPaymentPanel.top = controlPanel.bottom + 5;
     this.addChild( this.extraPaymentPanel );
 
     // Combined Graph Panel
@@ -371,7 +384,7 @@ export default class AmortizationCalcScreenView extends ScreenView {
     } );
 
     this.combinedGraphContainer = new Node();
-    const combinedGraphBackground = new Rectangle( 0, 0, 600, 450, {
+    const combinedGraphBackground = new Rectangle( 0, 0, 520, 400, {
       fill: 'white',
       stroke: '#ddd',
       lineWidth: 1
@@ -380,7 +393,7 @@ export default class AmortizationCalcScreenView extends ScreenView {
 
     const combinedGraphContent = new VBox( {
       children: [ this.graphInfoBox, this.combinedGraphContainer ],
-      spacing: 8,
+      spacing: 5,
       align: 'center'
     } );
 
@@ -390,8 +403,8 @@ export default class AmortizationCalcScreenView extends ScreenView {
       stroke: new Color( '#ccc' ),
       lineWidth: 2,
       cornerRadius: 8,
-      xMargin: 15,
-      yMargin: 15,
+      xMargin: 12,
+      yMargin: 12,
       tandem: options.tandem.createTandem( 'combinedGraphPanel' ),
       // Accessibility
       tagName: 'div',
@@ -400,14 +413,14 @@ export default class AmortizationCalcScreenView extends ScreenView {
       descriptionContent: 'Line chart showing how principal and interest payments change over the life of the loan. Hover over the chart to see detailed values for each month.'
     } );
 
-    // Position combined graph on right side
-    combinedGraphPanel.right = this.layoutBounds.maxX - AmortizationCalcConstants.SCREEN_VIEW_X_MARGIN - 20;
-    combinedGraphPanel.top = AmortizationCalcConstants.SCREEN_VIEW_Y_MARGIN;
+    // Position combined graph to the right of control panel
+    combinedGraphPanel.left = controlPanel.right + 15;
+    combinedGraphPanel.top = AmortizationCalcConstants.SCREEN_VIEW_Y_MARGIN + 5;
     this.addChild( combinedGraphPanel );
 
     // Initialize chart transform and node for bamboo charts
-    const graphWidth = 600;
-    const graphHeight = 450;
+    const graphWidth = 520;
+    const graphHeight = 400;
     const modelViewTransformRange = new Range( 0, 360 ); // months
     const modelViewTransformDomain = new Range( 0, 5000 ); // dollars (will be updated dynamically)
     
@@ -587,7 +600,7 @@ export default class AmortizationCalcScreenView extends ScreenView {
 
       // Add legend
       const legendText = new Text( 'Green: Principal | Orange: Interest', {
-        font: new PhetFont( 14 ),
+        font: new PhetFont( { size: 14, weight: 'bold' } ),
         fill: '#666',
         centerX: graphWidth / 2,
         top: 10
@@ -595,7 +608,7 @@ export default class AmortizationCalcScreenView extends ScreenView {
       this.chartNode.addChild( legendText );
 
       if ( extraSchedule.length > 0 ) {
-        const dashedLegendText = new Text( 'Dashed/Light: Standard | Solid/Dark: With Extra Payments', {
+        const dashedLegendText = new Text( 'Dashed: Standard Payments | Solid: Extra Payments', {
           font: new PhetFont( 14 ),
           fill: '#666',
           centerX: graphWidth / 2,
