@@ -5,7 +5,7 @@
  * Fully refactored to use PhET scene graph components (Panel, NumberControl, VBox, HBox, Text, RectangularPushButton)
  * while keeping Chart.js and data table as DOM nodes for performance (360+ rows).
  *
- * @author Luke Thompson
+ * @author Luke Thorne
  */
 
 import ScreenView, { ScreenViewOptions } from '../../../../joist/js/ScreenView.js';
@@ -47,7 +47,7 @@ type AmortizationCalcScreenViewOptions = SelfOptions & ScreenViewOptions;
 const PANEL_FILL = new Color( '#f7f5f4' );
 const ACCENT_COLOR = new Color( '#0c2049' );
 const TITLE_FONT = new PhetFont( { size: 18, weight: 'bold' } );
-const LABEL_FONT = new PhetFont( 14 );
+const LABEL_FONT = new PhetFont( 18 );
 const RESULTS_FONT = new PhetFont( 18 );
 const CONTROL_PANEL_WIDTH = 300;
 
@@ -509,8 +509,8 @@ export default class AmortizationCalcScreenView extends ScreenView {
 
       // Use lighter colors when showing standard alongside extra payments
       const standardInterestColor = extraSchedule.length > 0 
-        ? new Color( 232, 116, 59, 0.4 ) // Lighter orange with alpha
-        : new Color( 232, 116, 59 ); // Full orange
+        ? new Color( 232, 146, 59, 0.4 ) // Lighter orange with alpha
+        : new Color( 232, 146, 59 ); // Full orange
       const standardPrincipalColor = extraSchedule.length > 0 
         ? new Color( 25, 169, 121, 0.4 ) // Lighter green with alpha
         : new Color( 25, 169, 121 ); // Full green
@@ -537,7 +537,7 @@ export default class AmortizationCalcScreenView extends ScreenView {
         this.fullExtraPrincipalData = scheduleToDataPoints( extraSchedule, 'principal' );
 
         this.extraInterestPlot = new CanvasLinePlot( this.chartTransform, [], {
-          stroke: new Color( 232, 116, 59 ), // #e8743b
+          stroke: new Color( 232, 146, 59 ), // #e8743b
           lineWidth: 3
         } );
         painters.push( this.extraInterestPlot );
@@ -577,7 +577,7 @@ export default class AmortizationCalcScreenView extends ScreenView {
 
       // Add y-axis label
       const yLabel = new Text( 'Monthly Payment ($)', {
-        font: new PhetFont( { size: 11, weight: 'bold' } ),
+        font: new PhetFont( { size: 14, weight: 'bold' } ),
         fill: '#333',
         rotation: -Math.PI / 2,
         right: this.chartTransform.modelToViewXY( 0, 0 ).x - 15,
@@ -587,7 +587,7 @@ export default class AmortizationCalcScreenView extends ScreenView {
 
       // Add legend
       const legendText = new Text( 'Green: Principal | Orange: Interest', {
-        font: new PhetFont( 11 ),
+        font: new PhetFont( 14 ),
         fill: '#666',
         centerX: graphWidth / 2,
         top: 10
@@ -596,7 +596,7 @@ export default class AmortizationCalcScreenView extends ScreenView {
 
       if ( extraSchedule.length > 0 ) {
         const dashedLegendText = new Text( 'Dashed/Light: Standard | Solid/Dark: With Extra Payments', {
-          font: new PhetFont( 10 ),
+          font: new PhetFont( 14 ),
           fill: '#666',
           centerX: graphWidth / 2,
           top: 28
@@ -643,15 +643,15 @@ export default class AmortizationCalcScreenView extends ScreenView {
       
       // Standard scenario metrics
       const standardMonthsText = new Text( `Standard: ${schedule.length} months`, {
-        font: new PhetFont( 11 ),
+        font: new PhetFont( 14 ),
         fill: '#666'
       } );
       const standardTotalText = new Text( `Total: $${formatNumber( totalPaid )}`, {
-        font: new PhetFont( { size: 11, weight: 'bold' } ),
+        font: new PhetFont( { size: 14, weight: 'bold' } ),
         fill: '#333'
       } );
       const standardInterestText = new Text( `Interest: $${formatNumber( totalInterest )}`, {
-        font: new PhetFont( 11 ),
+        font: new PhetFont( { size: 14, weight: 'bold' } ),
         fill: '#e8743b'
       } );
       
@@ -675,29 +675,29 @@ export default class AmortizationCalcScreenView extends ScreenView {
         const totalInterestWithExtra = model.totalInterestWithExtraProperty.value;
         
         extraMonthsText = new Text( `With Extra: ${scheduleWithExtra.length} months`, {
-          font: new PhetFont( 11 ),
+          font: new PhetFont( 14 ),
           fill: '#666'
         } );
         extraTotalText = new Text( `Total: $${formatNumber( totalPaidWithExtra )}`, {
-          font: new PhetFont( { size: 11, weight: 'bold' } ),
+          font: new PhetFont( { size: 14, weight: 'bold' } ),
           fill: '#333'
         } );
         extraInterestText = new Text( `Interest: $${formatNumber( totalInterestWithExtra )}`, {
-          font: new PhetFont( 11 ),
+          font: new PhetFont( { size: 14, weight: 'bold' } ),
           fill: '#19a979'
         } );
       } else {
         // Show empty placeholder to maintain spacing
         extraMonthsText = new Text( ' ', {
-          font: new PhetFont( 11 ),
+          font: new PhetFont( 14 ),
           fill: '#666'
         } );
         extraTotalText = new Text( ' ', {
-          font: new PhetFont( { size: 11, weight: 'bold' } ),
+          font: new PhetFont( { size: 14, weight: 'bold' } ),
           fill: '#333'
         } );
         extraInterestText = new Text( ' ', {
-          font: new PhetFont( 11 ),
+          font: new PhetFont( 14 ),
           fill: '#19a979'
         } );
       }
@@ -938,7 +938,7 @@ export default class AmortizationCalcScreenView extends ScreenView {
 
     // Create interest circle (orange)
     this.interestCircle = new Circle( 5, {
-      fill: new Color( 232, 116, 59 ),
+      fill: new Color( 232, 146, 59 ),
       stroke: 'white',
       lineWidth: 2,
       visible: false
@@ -946,7 +946,7 @@ export default class AmortizationCalcScreenView extends ScreenView {
 
     // Create tooltip for principal
     const principalTooltipText = new Text( '', {
-      font: new PhetFont( 11 ),
+      font: new PhetFont( 14 ),
       fill: 'white'
     } );
     this.principalTooltip = new Panel( principalTooltipText, {
@@ -961,11 +961,11 @@ export default class AmortizationCalcScreenView extends ScreenView {
 
     // Create tooltip for interest
     const interestTooltipText = new Text( '', {
-      font: new PhetFont( 11 ),
+      font: new PhetFont( 14 ),
       fill: 'white'
     } );
     this.interestTooltip = new Panel( interestTooltipText, {
-      fill: new Color( 232, 116, 59, 0.9 ),
+      fill: new Color( 232, 146, 59, 0.9 ),
       stroke: 'white',
       lineWidth: 1,
       cornerRadius: 4,
@@ -976,7 +976,7 @@ export default class AmortizationCalcScreenView extends ScreenView {
 
     // Create month label that follows cursor along x-axis with white background
     const monthLabelText = new Text( '', {
-      font: new PhetFont( { size: 11, weight: 'bold' } ),
+      font: new PhetFont( { size: 14, weight: 'bold' } ),
       fill: new Color( 100, 100, 100 )
     } );
     this.monthLabel = new Panel( monthLabelText, {
