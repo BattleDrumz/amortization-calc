@@ -39,6 +39,9 @@ import { renderAmortizationTable, formatNumber, aggregateByYear } from '../../am
 import AmortizationCalcConstants from '../../common/AmortizationCalcConstants.js';
 import amortizationCalc from '../../amortizationCalc.js';
 import AmortizationCalcModel from '../model/AmortizationCalcModel.js';
+import AmortizationCalcStrings from '../../AmortizationCalcStrings.js';
+import { fillPattern } from './fillPattern.js';
+
 
 type SelfOptions = EmptySelfOptions;
 type AmortizationCalcScreenViewOptions = SelfOptions & ScreenViewOptions;
@@ -111,7 +114,7 @@ export default class AmortizationCalcScreenView extends ScreenView {
     this.model = model;
 
     // Title for control panel
-    const controlTitleText = new Text( 'Loan Explorer', {
+    const controlTitleText = new Text( AmortizationCalcStrings.loanExplorerStringProperty, {
       font: TITLE_FONT,
       fill: ACCENT_COLOR,
       tandem: options.tandem.createTandem( 'controlTitleText' ),
@@ -121,7 +124,7 @@ export default class AmortizationCalcScreenView extends ScreenView {
     } );
 
     // Create NumberControl for Loan Amount
-    const loanAmountControl = new NumberControl( 'Loan Amount ($):', model.loanAmountProperty, new Range( 10000, 1000000 ), {
+    const loanAmountControl = new NumberControl( AmortizationCalcStrings.loanAmountStringProperty, model.loanAmountProperty, new Range( 10000, 1000000 ), {
       delta: 10000,
       numberDisplayOptions: {
         decimalPlaces: 0,
@@ -145,7 +148,7 @@ export default class AmortizationCalcScreenView extends ScreenView {
     } );
 
     // Create radio button group for Term Years (15 or 30)
-    const termYearsLabel = new Text( 'Term:', {
+    const termYearsLabel = new Text( AmortizationCalcStrings.termStringProperty, {
       font: LABEL_FONT,
       // Accessibility
       tagName: 'label',
@@ -155,12 +158,12 @@ export default class AmortizationCalcScreenView extends ScreenView {
     const termYearsRadioButtonGroup = new AquaRadioButtonGroup( model.termYearsProperty, [
       { 
         value: 15, 
-        createNode: () => new Text( '15 years', { font: LABEL_FONT } ), 
+        createNode: () => new Text( AmortizationCalcStrings.years15StringProperty, { font: LABEL_FONT } ), 
         tandemName: 'fifteenYearsRadioButton'
       },
       { 
         value: 30, 
-        createNode: () => new Text( '30 years', { font: LABEL_FONT } ), 
+        createNode: () => new Text( AmortizationCalcStrings.years30StringProperty, { font: LABEL_FONT } ), 
         tandemName: 'thirtyYearsRadioButton'
       }
     ], {
@@ -182,7 +185,7 @@ export default class AmortizationCalcScreenView extends ScreenView {
     } );
 
     // Create NumberControl for Interest Rate
-    const interestRateControl = new NumberControl( 'Interest Rate (%):', model.interestRateProperty, new Range( 0, 12 ), {
+    const interestRateControl = new NumberControl( AmortizationCalcStrings.interestRateStringProperty, model.interestRateProperty, new Range( 0, 12 ), {
       delta: 0.1,
       numberDisplayOptions: {
         decimalPlaces: 2,
@@ -206,7 +209,7 @@ export default class AmortizationCalcScreenView extends ScreenView {
     } );
 
     // Calculate Button
-    const calculateButtonText = new Text( 'Amortize!', {
+    const calculateButtonText = new Text( AmortizationCalcStrings.amortizeButtonStringProperty, {
       font: new PhetFont( { size: 16, weight: 'bold' } ),
       fill: 'white'
     } );
@@ -281,7 +284,7 @@ export default class AmortizationCalcScreenView extends ScreenView {
     this.addChild( controlPanel );
 
     // Create Extra Payment Panel (initially hidden/locked)
-    const extraPaymentTitleText = new Text( 'What happens when you extra?', {
+    const extraPaymentTitleText = new Text( AmortizationCalcStrings.extraPaymentTitleStringProperty, {
       font: new PhetFont( { size: 16, weight: 'bold' } ),
       fill: new Color( '#19a979' ),
       // Accessibility
@@ -290,7 +293,7 @@ export default class AmortizationCalcScreenView extends ScreenView {
     } );
 
     // Create NumberControl for Extra Monthly Payment
-    this.extraPaymentControl = new NumberControl( 'Extra Monthly Payment ($):', model.extraMonthlyPaymentProperty, new Range( 0, 1000 ), {
+    this.extraPaymentControl = new NumberControl( AmortizationCalcStrings.extraMonthlyPaymentStringProperty, model.extraMonthlyPaymentProperty, new Range( 0, 1000 ), {
       delta: 25,
       numberDisplayOptions: {
         decimalPlaces: 0,
@@ -315,7 +318,7 @@ export default class AmortizationCalcScreenView extends ScreenView {
     } );
 
     // Re-amortize Button
-    const reAmortizeButtonText = new Text( 'Re-amortize!', {
+    const reAmortizeButtonText = new Text( AmortizationCalcStrings.reAmortizeButtonStringProperty, {
       font: new PhetFont( { size: 16, weight: 'bold' } ),
       fill: 'white'
     } );
@@ -367,7 +370,7 @@ export default class AmortizationCalcScreenView extends ScreenView {
     this.addChild( this.extraPaymentPanel );
 
     // Combined Graph Panel
-    this.graphTitleText = new Text( 'Payment Breakdown', {
+    this.graphTitleText = new Text( AmortizationCalcStrings.paymentBreakdownStringProperty, {
       font: new PhetFont( { size: 16, weight: 'bold' } ),
       fill: ACCENT_COLOR,
       tandem: options.tandem.createTandem( 'graphTitleText' ),
@@ -578,7 +581,7 @@ export default class AmortizationCalcScreenView extends ScreenView {
         if ( year === 1 || year === termYears || year % 5 === 0 ) {
           const monthNumber = year * 12;
           const viewPoint = this.chartTransform.modelToViewXY( monthNumber, 0 );
-          const yearLabel = new Text( `Year ${year}`, {
+          const yearLabel = new Text( fillPattern( AmortizationCalcStrings.yearStringProperty, { number: year } ), {
             font: new PhetFont( 10 ),
             fill: '#333',
             centerX: viewPoint.x,
@@ -634,7 +637,7 @@ export default class AmortizationCalcScreenView extends ScreenView {
       const extraPayment = model.extraMonthlyPaymentProperty.value;
 
       if ( model.loanAmountProperty.value <= 0 || model.termYearsProperty.value <= 0 ) {
-        this.resultsText.string = 'Please enter positive values';
+        this.resultsText.string = AmortizationCalcStrings.pleaseEnterPositiveValuesStringProperty.value;
         this.comparisonText.string = '';
         // Update accessibility description
         this.resultsText.descriptionContent = 'Please enter positive values for loan amount and term';
@@ -643,7 +646,7 @@ export default class AmortizationCalcScreenView extends ScreenView {
 
       // Update results text to show only monthly payment
       const monthlyPaymentFormatted = formatNumber( monthlyPayment );
-      this.resultsText.string = `Monthly Payment: $${monthlyPaymentFormatted}`;
+      this.resultsText.string = fillPattern( AmortizationCalcStrings.monthlyPaymentStringProperty, { amount: `$${monthlyPaymentFormatted}` } );
       
       // Update accessibility description with full context
       this.resultsText.descriptionContent = `Your monthly payment is $${monthlyPaymentFormatted}. ` +
@@ -655,15 +658,15 @@ export default class AmortizationCalcScreenView extends ScreenView {
       this.graphInfoBox.addChild( this.graphTitleText );
       
       // Standard scenario metrics
-      const standardMonthsText = new Text( `Standard: ${schedule.length} months`, {
+      const standardMonthsText = new Text( fillPattern( AmortizationCalcStrings.standardMonthsStringProperty, { months: schedule.length } ), {
         font: new PhetFont( 14 ),
         fill: '#666'
       } );
-      const standardTotalText = new Text( `Total: $${formatNumber( totalPaid )}`, {
+      const standardTotalText = new Text( fillPattern( AmortizationCalcStrings.totalStringProperty, { amount: `$${formatNumber( totalPaid )}` } ), {
         font: new PhetFont( { size: 14, weight: 'bold' } ),
         fill: '#333'
       } );
-      const standardInterestText = new Text( `Interest: $${formatNumber( totalInterest )}`, {
+      const standardInterestText = new Text( fillPattern( AmortizationCalcStrings.interestStringProperty, { amount: `$${formatNumber( totalInterest )}` } ), {
         font: new PhetFont( { size: 14, weight: 'bold' } ),
         fill: '#e8743b'
       } );
@@ -687,15 +690,15 @@ export default class AmortizationCalcScreenView extends ScreenView {
         const totalPaidWithExtra = model.totalPaidWithExtraProperty.value;
         const totalInterestWithExtra = model.totalInterestWithExtraProperty.value;
         
-        extraMonthsText = new Text( `With Extra: ${scheduleWithExtra.length} months`, {
+        extraMonthsText = new Text( fillPattern( AmortizationCalcStrings.withExtraMonthsStringProperty, { months: scheduleWithExtra.length } ), {
           font: new PhetFont( 14 ),
           fill: '#666'
         } );
-        extraTotalText = new Text( `Total: $${formatNumber( totalPaidWithExtra )}`, {
+        extraTotalText = new Text( fillPattern( AmortizationCalcStrings.totalStringProperty, { amount: `$${formatNumber( totalPaidWithExtra )}` } ), {
           font: new PhetFont( { size: 14, weight: 'bold' } ),
           fill: '#333'
         } );
-        extraInterestText = new Text( `Interest: $${formatNumber( totalInterestWithExtra )}`, {
+        extraInterestText = new Text( fillPattern( AmortizationCalcStrings.interestStringProperty, { amount: `$${formatNumber( totalInterestWithExtra )}` } ), {
           font: new PhetFont( { size: 14, weight: 'bold' } ),
           fill: '#19a979'
         } );
@@ -748,6 +751,21 @@ export default class AmortizationCalcScreenView extends ScreenView {
     // Also listen to extra payment properties for Re-amortize updates
     model.totalInterestWithExtraProperty.link( scheduleListener );
     model.totalPaidWithExtraProperty.link( scheduleListener );
+
+    // Also listen to localized string changes so dynamic text updates on locale switch
+    const localizedStringProperties = [
+      AmortizationCalcStrings.monthlyPaymentStringProperty,
+      AmortizationCalcStrings.standardMonthsStringProperty,
+      AmortizationCalcStrings.withExtraMonthsStringProperty,
+      AmortizationCalcStrings.totalStringProperty,
+      AmortizationCalcStrings.interestStringProperty,
+      AmortizationCalcStrings.yearStringProperty,
+      AmortizationCalcStrings.monthStringProperty,
+      AmortizationCalcStrings.principalStringProperty,
+      AmortizationCalcStrings.wasStringProperty
+    ];
+
+    localizedStringProperties.forEach( p => p.link( scheduleListener ) );
 
     // Don't render initially - wait for user to click Amortize
 
@@ -855,6 +873,7 @@ export default class AmortizationCalcScreenView extends ScreenView {
       model.totalPaidProperty.unlink( scheduleListener );
       model.totalInterestWithExtraProperty.unlink( scheduleListener );
       model.totalPaidWithExtraProperty.unlink( scheduleListener );
+      localizedStringProperties.forEach( p => p.unlink( scheduleListener ) );
       // Dispose hover components
       if ( this.cursorLine ) {
         this.cursorLine.dispose();
@@ -1034,7 +1053,7 @@ export default class AmortizationCalcScreenView extends ScreenView {
           this.cursorLine!.visible = true;
           
           // Update month label
-          monthLabelText.string = `Month ${entry.paymentNumber}`;
+          monthLabelText.string = fillPattern( AmortizationCalcStrings.monthStringProperty, { number: entry.paymentNumber } );
           this.monthLabel!.centerX = localPoint.x;
           this.monthLabel!.bottom = chartHeight - 5;
           this.monthLabel!.visible = true;
@@ -1045,9 +1064,9 @@ export default class AmortizationCalcScreenView extends ScreenView {
           
           // Build tooltip text showing both values if available
           if ( standardEntry ) {
-            principalTooltipText.string = `Principal: $${formatNumber( entry.principal )} (was $${formatNumber( standardEntry.principal )})`;
+            principalTooltipText.string = `${fillPattern( AmortizationCalcStrings.principalStringProperty, { amount: `$${formatNumber( entry.principal )}` } )} (${fillPattern( AmortizationCalcStrings.wasStringProperty, { amount: `$${formatNumber( standardEntry.principal )}` } )})`;
           } else {
-            principalTooltipText.string = `Principal: $${formatNumber( entry.principal )}`;
+            principalTooltipText.string = fillPattern( AmortizationCalcStrings.principalStringProperty, { amount: `$${formatNumber( entry.principal )}` } );
           }
           
           // Position principal tooltip to the left, but clamp within bounds
@@ -1062,9 +1081,9 @@ export default class AmortizationCalcScreenView extends ScreenView {
           
           // Build tooltip text showing both values if available
           if ( standardEntry ) {
-            interestTooltipText.string = `Interest: $${formatNumber( entry.interest )} (was $${formatNumber( standardEntry.interest )})`;
+            interestTooltipText.string = `${fillPattern( AmortizationCalcStrings.interestStringProperty, { amount: `$${formatNumber( entry.interest )}` } )} (${fillPattern( AmortizationCalcStrings.wasStringProperty, { amount: `$${formatNumber( standardEntry.interest )}` } )})`;
           } else {
-            interestTooltipText.string = `Interest: $${formatNumber( entry.interest )}`;
+            interestTooltipText.string = fillPattern( AmortizationCalcStrings.interestStringProperty, { amount: `$${formatNumber( entry.interest )}` } );
           }
           
           // Position interest tooltip to the right, but clamp within bounds

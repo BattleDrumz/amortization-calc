@@ -4,5 +4,89 @@
   },
   "screen.name": {
     "value": "Amortization Calculator"
+  },
+  "loanExplorer": {
+    "value": "Loan Explorer"
+  },
+  "loanAmount": {
+    "value": "Loan Amount ($):"
+  },
+  "term": {
+    "value": "Term:"
+  },
+  "years15": {
+    "value": "15 years"
+  },
+  "years30": {
+    "value": "30 years"
+  },
+  "interestRate": {
+    "value": "Interest Rate (%):"
+  },
+  "amortizeButton": {
+    "value": "Amortize!"
+  },
+  "monthlyPayment": {
+    "value": "Monthly Payment: {{amount}}"
+  },
+  "extraPaymentTitle": {
+    "value": "What happens when you extra?"
+  },
+  "extraMonthlyPayment": {
+    "value": "Extra Monthly Payment ($):"
+  },
+  "reAmortizeButton": {
+    "value": "Re-amortize!"
+  },
+  "paymentBreakdown": {
+    "value": "Payment Breakdown"
+  },
+  "standardMonths": {
+    "value": "Standard: {{months}} months"
+  },
+  "withExtraMonths": {
+    "value": "With Extra: {{months}} months"
+  },
+  "total": {
+    "value": "Total: {{amount}}"
+  },
+  "interest": {
+    "value": "Interest: {{amount}}"
+  },
+  "principal": {
+    "value": "Principal: {{amount}}"
+  },
+  "was": {
+    "value": "was {{amount}}"
+  },
+  "legendPrincipal": {
+    "value": "Green: Principal"
+  },
+  "legendInterest": {
+    "value": "Orange: Interest"
+  },
+  "legendDashed": {
+    "value": "Dashed: Standard Payments"
+  },
+  "legendSolid": {
+    "value": "Solid: Extra Payments"
+  },
+  "monthlyPaymentAxis": {
+    "value": "Monthly Payment ($)"
+  },
+  "year": {
+    "value": "Year {{number}}"
+  },
+  "month": {
+    "value": "Month {{number}}"
+  },
+  "principal": {
+    "value": "Principal: {{amount}}"
+  },
+  "was": {
+    "value": "was {{amount}}"
+  },
+  "pleaseEnterPositiveValues": {
+    "value": "Please enter positive values"
   }
 }

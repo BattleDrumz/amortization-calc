@@ -97,11 +97,13 @@ amortization-calc/
 ├── doc/
 │   ├── implementation-notes.md         # Technical implementation details
 │   ├── model.md                        # Model architecture documentation
+│   ├── accessibility.md                # Accessibility/PDOM documentation
+│   ├── localization.md                 # Localization/i18n documentation
 │   └── release-notes.md                # Version history and changes
 ├── images/
 │   └── license.json                    # Image licensing information
 ├── amortization-calc_en.html           # HTML entry point
-├── amortization-calc-strings_en.json   # English strings
+├── amortization-calc-strings_en.json   # English strings (source for localization)
 ├── dependencies.json                   # PhET dependencies with SHAs
 ├── package.json                        # npm configuration
 ├── tsconfig.json                       # TypeScript configuration
@@ -156,6 +158,7 @@ The simulation follows PhET's strict Model-View-Controller pattern:
 **Model (`AmortizationCalcModel.ts`)**
 - **State Management**: All application state using AXON Properties and ObservableArrays
 - **Business Logic**: `computeSchedule()` method handles all calculations
+- **Internationalization**: All user-facing strings use LocalizedStringProperty from `AmortizationCalcStrings.ts`
 - **Standard Scenario Properties**:
   - Input: `loanAmountProperty`, `termYearsProperty`, `interestRateProperty`
   - Output: `monthlyPaymentProperty`, `totalInterestProperty`, `totalPaidProperty`
@@ -261,6 +264,8 @@ This project is licensed under the MIT License — see the LICENSE file for deta
 
 - [PhET Development Overview](https://github.com/phetsims/phet-info/blob/main/doc/phet-development-overview.md)
 - [Amortization Calculator Model Documentation](./doc/model.md)
+- [Accessibility Documentation](./doc/accessibility.md)
+- [Localization Documentation](./doc/localization.md)
 - [Implementation Notes](./doc/implementation-notes.md)
 
 ## Contact
